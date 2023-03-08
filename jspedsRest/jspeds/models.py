@@ -1,0 +1,50 @@
+from django.db import models
+# from django.db.models import RawSQL
+# Create your models here.
+
+class PatAppCrossRef(models.Model): 
+    app_no = models.CharField(max_length=30, db_column='app_no', primary_key=True)
+    publication_number = models.CharField(max_length=30, null=True) 
+    patent_number = models.CharField(max_length=30, null=True) 
+
+class Application(models.Model): 
+    # app_no = models.CharField(max_length=30)
+    app_no = models.CharField(max_length=30, db_column='app_no', primary_key=True)
+    peds_date = models.DateField(null=True)
+    filing_date = models.DateField(null=True)
+    art_unit = models.CharField(max_length=30, null=True)
+    examiner = models.CharField(max_length=300, null=True)
+    first_inventor = models.CharField(max_length=300, null=True)
+    entity_category = models.CharField(max_length=80, null=True) 
+    conf_no = models.CharField(max_length=30, null=True)
+    app_status = models.CharField(max_length=300, null=True)
+    app_status_date = models.DateField(null=True)
+    file_loc = models.CharField(max_length=300, null=True)
+    title = models.CharField(max_length=300, null=True) 
+    fitf= models.CharField(max_length=300, null=True) 
+    app_type= models.CharField(max_length=300, null=True)  
+    applicant_ref= models.CharField(max_length=300, null=True) 
+    applicant= models.CharField(max_length=300, null=True) 
+    assignee= models.CharField(max_length=300, null=True) 
+    law_firm_name= models.CharField(max_length=300, null=True) 
+    publication_number = models.CharField(max_length=30, null=True) 
+    publication_date = models.DateField(null=True)
+    patent_number = models.CharField(max_length=30, null=True) 
+    grant_date = models.DateField(null=True)
+    pta_amount= models.CharField(max_length=30, null=True) 
+    terminal_disclaimer= models.BooleanField(null=True)
+    continuing_app= models.BooleanField(null=True)
+    related_for= models.BooleanField(null=True)
+    ipOfficeCode= models.CharField(max_length=300, null=True)
+    nationalSubclass= models.CharField(max_length=30, null=True)
+    nationalClass= models.CharField(max_length=30, null=True)
+    law_firms=models.JSONField(null=True)
+    practitioners=models.JSONField(null=True)
+    inventors=models.JSONField(null=True)
+    metadata=models.JSONField(null=True)  
+    pros_hist=models.JSONField(null=True)  
+    pta_bag=models.JSONField(null=True)  
+    assignment=models.JSONField(null=True)  
+    content=models.JSONField(null=True)
+    def __str__(self):
+        return self.app_no
