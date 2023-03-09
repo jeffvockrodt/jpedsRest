@@ -129,23 +129,23 @@ def redirect_view(request):
     else:
         return redirect("/admin")
     
-class TokenLoginRequiredMixin(mixins.LoginRequiredMixin):
+# class TokenLoginRequiredMixin(mixins.LoginRequiredMixin):
 
-    """A login required mixin that allows token authentication."""
+#     """A login required mixin that allows token authentication."""
 
-    def dispatch(self, request, *args, **kwargs):
-        """If token was provided, ignore authenticated status."""
-        http_auth = request.META.get("HTTP_AUTHORIZATION")
+#     def dispatch(self, request, *args, **kwargs):
+#         """If token was provided, ignore authenticated status."""
+#         http_auth = request.META.get("HTTP_AUTHORIZATION")
 
-        """Check for a passing JWT <token> in headers"""
-        if http_auth and "JWT" in http_auth:
-            pass
+#         """Check for a passing JWT <token> in headers"""
+#         if http_auth and "JWT" in http_auth:
+#             pass
 
-        elif not request.user.is_authenticated:
-            return self.handle_no_permission()
+#         elif not request.user.is_authenticated:
+#             return self.handle_no_permission()
 
-        return super(mixins.LoginRequiredMixin, self).dispatch(
-            request, *args, **kwargs)
+#         return super(mixins.LoginRequiredMixin, self).dispatch(
+#             request, *args, **kwargs)
 
 class PrivateGraphQLView(LoginRequiredMixin, GraphQLView):
     pass

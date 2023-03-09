@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  jspedsrest:
+    build:
+      context: . 
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./jspedsRest:/jspedsRest
+    command: sh -c "python manage.py runserver 0.0.0.0:8090"
+    environment: 
+      - DEBUG=1
+      - ALLOWED_HOST=127.0.0.1,localhost,0.0.0.0
+

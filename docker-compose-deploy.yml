@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  jspedsrest:
+    build:
+      context: . 
+    volumes:
+      - static_data:/vol/web
+    environment:
+      - SECRET_KEY='django-insecure-@b64!-hlq5@+e+%-na%hs)jvf^f+!aasdc(4a00jx_v*5i6-6^'
+      - ALLOWED_HOST=127.0.0.1,localhost
+
+  proxy:
+    build:
+      context: ./proxy
+    volumes:
+      - static_data:/vol/static_data
+    ports:
+      - "8090:8090"
+    depends_on:
+      - jspedsrest
+
+volumes:
+  static_data:

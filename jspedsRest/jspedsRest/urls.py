@@ -46,7 +46,7 @@ urlpatterns = [
     path('', redirect_view, name='index'),
     path('admin/', admin.site.urls),
     # path('api/', include('jspeds.api.urls')),
-    path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
-    # path('graphql/', csrf_exempt(PrivateGraphQLView.as_view(graphiql=True, schema=schema)))
+    # path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
+    path('graphql/', csrf_exempt(PrivateGraphQLView.as_view(graphiql=True, schema=schema)))
     # path('graphql/', csrf_exempt(MyGraphQLView.as_view(graphiql=True)), name='graphql')
 ]
