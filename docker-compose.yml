@@ -1,14 +1,26 @@
 version: "3.7"
+
 services:
   jspedsrest:
     build:
       context: . 
-    ports:
-      - "8090:8090"
+    command: python manage.py runserver 0.0.0.0:8090
     volumes:
       - ./jspedsRest:/jspedsRest
-    command: sh -c "python manage.py runserver 0.0.0.0:8090"
-    environment: 
-      - DEBUG=1
-      - ALLOWED_HOST=127.0.0.1,localhost,0.0.0.0
+    ports:
+      - 8090:8090
+    env_file:
+      - ./.env.dev
+    networks:
+      - tunnel
+   
+  cloudflaretunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-tunnel
+    restart: unless-stopped
+    entrypoint: ["cloudflared", "tunnel", "--no-autoupdate", "run", "--token", "$CLOUDFLARE_TUNNEL_TOKEN"]
+    networks:
+      - tunnel
 
+networks:
+  tunnel:

@@ -21,17 +21,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'changename')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 # DEBUG=True
+# ALLOWED_HOSTS=["*"]
+
 DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
-ALLOWED_HOSTS = ['localhost']
-ALLOWED_HOSTS_ENV= os.environ.get('ALLOWED_HOSTS')
-if ALLOWED_HOSTS_ENV: 
-    ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))
+ALLOWED_HOSTS=[]
+ALLOWED_HOST_ENV=os.environ.get('ALLOWED_HOSTS')
+if ALLOWED_HOST_ENV:
+    ALLOWED_HOSTS.extend(ALLOWED_HOST_ENV.split(','))
 
+CSRF_TRUSTED_ORIGINS = ALLOWED_HOSTS
+
+# PROD_HOST_NAME = os.getenv('PROD_HOST_NAME', None)
+# if PROD_HOST_NAME:
+#     ALLOWED_HOSTS.append(PROD_HOST_NAME)
+#     CSRF_TRUSTED_ORIGINS.append(f'https://{PROD_HOST_NAME}')
 
 # Application definition
 
@@ -85,12 +94,11 @@ WSGI_APPLICATION = 'jspedsRest.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'uspto_peds_json',
-        'USER': 'jeff',
-        'PASSWORD' : 'cofee1000',
-        'HOST' : '192.168.0.29',
-        'PORT' : '5432',
-
+        'NAME': os.environ.get('POSTGRES_DB_NAME'),
+        'USER': os.environ.get('POSTGRES_USER_NAME'),
+        'PASSWORD' : os.environ.get('POSTGRES_PASSWORD'),
+        'HOST' : os.environ.get('POSTGRES_HOST'),
+        'PORT' : os.environ.get('POSTGRES_PORT'),
     }
 }
 
@@ -160,11 +168,13 @@ LOGIN_REDIRECT_URL = '/graphql'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/static/'
-MEDIA_URL = '/static/media/'
 
-STATIC_ROOT = '/vol/web/static'
-MEDIA_ROOT = '/vol/web/media'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
+# STATIC_ROOT = '/vol/web/static'
+# MEDIA_ROOT = '/vol/web/media'
 
 # STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # MEDIA_ROOT = os.path.join(BASE_DIR, "media")

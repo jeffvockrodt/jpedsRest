@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  jspedsrest:
+    build:
+      context: ./jspedsRest
+      dockerfile: Dockerfile.prod
+    command: gunicorn jspedsRest.wsgi:application --bind 0.0.0.0:8090
+    expose:
+      - 8090
+    env_file:
+      - ./.env
+    volumes:
+      - static_volume:/home/app/jspedsRest/staticfiles
+    environment:
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - ALLOWED_HOST=${ALLOWED_HOSTS}
+      - DEBUG=$DEBUG
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - 1338:80
+    depends_on:
+      - jspedsrest
+    volumes:
+      - static_volume:/home/app/jspedsRest/staticfiles
+
+  cloudflaretunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-tunnel
+    restart: unless-stopped
+    entrypoint: ["cloudflared", "tunnel", "--no-autoupdate", "run", "--token", "${CLOUDFLARE_TUNNEL_TOKEN}"]
+
+volumes:
+  static_volume:
+
